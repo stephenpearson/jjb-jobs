@@ -1,0 +1,28 @@
+- job:
+    name: "job1"
+    project-type: freestyle
+    disabled: false
+    concurrent: false
+    properties:
+    - build-discarder:
+        artifact-days-to-keep: -1
+        artifact-num-to-keep: -1
+        days-to-keep: -1
+        num-to-keep: 5
+    - throttle:
+        categories:
+          - ansible
+        option: category
+        max-per-node: 1
+        max-total: 1
+        matrix-builds: false
+        matrix-configs: true
+    publishers: []
+    triggers: []
+    wrappers:
+    - ansicolor:
+        colormap: xterm
+    builders:
+    - shell: |-
+        #!/bin/bash
+        env

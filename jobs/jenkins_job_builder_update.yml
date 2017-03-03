@@ -1,0 +1,49 @@
+- job:
+    name: "jenkins_job_builder_update"
+    project-type: freestyle
+    disabled: false
+    concurrent: false
+    properties:
+    - build-discarder:
+        artifact-days-to-keep: 1
+        artifact-num-to-keep: 5
+        days-to-keep: 1
+        num-to-keep: 5
+    publishers: []
+    triggers: []
+    scm:
+    - git:
+        branches:
+        - '*/master'
+        url: ${JJB_GIT_URL}
+    wrappers:
+    - ansicolor:
+        colormap: xterm
+    builders:
+    - shell: |-
+        #!/bin/bash
+
+        if [ -f "jobs/delete-jobs.txt" ]
+        then
+          echo
+          echo
+          echo "Deleting jobs ..."
+          while IFS='' read -r line || [[ -n "$line" ]]
+          do
+            line=$(echo "$line" | sed 's/#.*//g')
+            echo "$line" | grep -q -e '^[[:space:]]*$'
+            if [ $? != "0" ]
+            then
+              /usr/local/bin/jenkins-jobs --conf /var/lib/jenkins/jenkins_jobs.ini delete "$line"
+            fi
+          done < jobs/delete-jobs.txt
+          echo
+        fi
+
+        echo
+        echo
+        echo "Creating/updating jobs ..."
+        for i in jobs/*.yml
+        do
+          /usr/local/bin/jenkins-jobs --conf /var/lib/jenkins/jenkins_jobs.ini update $i
+        done
