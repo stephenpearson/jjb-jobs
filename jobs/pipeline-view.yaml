@@ -1,0 +1,19 @@
+- view:
+    name: testpipeline11
+    view-type: pipeline
+    description: 'pipeline view test'
+    filter-executors: false
+    filter-queue: false
+    first-job: percona-status
+    no-of-displayed-builds: 3
+    title: testbuild
+    link-style: New Window
+    css-Url: fake.urlfor.css 
+    latest-job-only: true
+    manual-trigger: true
+    show-parameters: true 
+    parameters-in-headers: true
+    start-with-parameters: true
+    refresh-frequency: 3 
+    definition-header: true
+                          

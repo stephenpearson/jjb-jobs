@@ -1,0 +1,20 @@
+- view:
+    name: status-check
+    view-type: list
+    description: 'All Jobs related to status check'
+    filter-executors: true
+    filter-queue: true
+    job-name:
+       - percona-status
+       - rabbitmq-status
+    columns:
+       - status
+       - weather
+       - job
+       - last-success
+       - last-failure
+       - last-duration
+       - build-button
+       - last-stable
+    recurse: true
+    status-filter: true
